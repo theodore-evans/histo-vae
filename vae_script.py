@@ -113,5 +113,5 @@ vae.fit(X, epochs=150, batch_size=128, callbacks=[cp_callback])
 
 #%%
 
-if args.log_dir:
+if args.logs_dir:
     sys.stdout.close()
