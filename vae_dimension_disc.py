@@ -198,7 +198,7 @@ direction_input = keras.Input(shape=(k_dim))
 error_input = keras.Input(shape=(1))
 z_input = keras.Input(shape=(latent_dim))
 pre_a = layers.Multiply()([direction_input, error_input])
-post_a = layers.Dense(latent_dim, kernel_constraint = UnitNorm(axis = 1))(pre_a)
+post_a = layers.Dense(latent_dim, use_bias=False, kernel_constraint = UnitNorm(axis = 1))(pre_a)
 perturbed_out = layers.Add()([post_a, z_input])
 model_A = keras.Model([direction_input, error_input, z_input], perturbed_out)
 model_A.summary()
@@ -244,8 +244,8 @@ class DimensionDiscover(keras.Model):
             grads_r = tape_r.gradient(total_loss, self.model_R.trainable_weights)
             grads_a = tape_a.gradient(total_loss, self.model_A.trainable_weights)
 
-            self.optimizer.apply_gradients(zip(grads_r, self.model_R.trainable_variables))
-            self.optimizer.apply_gradients(zip(grads_a, self.model_A.trainable_variables))
+            self.optimizer[0].apply_gradients(zip(grads_r, self.model_R.trainable_variables))
+            self.optimizer[1].apply_gradients(zip(grads_a, self.model_A.trainable_variables))
         return {
             "loss": total_loss,
             "dimension_loss": k_loss,
@@ -272,7 +272,7 @@ vae = VAE(encoder, decoder)
 vae.compile(optimizer=keras.optimizers.Adam())
 vae.load_weights(Path(args.weights_vae, 'weights.ckpt'))
 dd = DimensionDiscover(model_A, vae.decoder, reconstructor)
-dd.compile(optimizer=keras.optimizers.Adam())
+dd.compile(optimizer=[keras.optimizers.Adam(learning_rate=0.0001), keras.optimizers.Adam(learning_rate=0.0001)])
 dd.fit(data_generator(k_dim, latent_dim, batch_size=batch_size),
         epochs=100,
         steps_per_epoch = 512,
