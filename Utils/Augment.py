@@ -30,7 +30,7 @@ class Augment:
             transformed_images.append(transformed_image)
             num_transformations += 1
 
-        return transformed_images
+        return np.array(transformed_images)
 
     def RandomRotation(self, image_array : ndarray):
         # rotates the image by 90, 180 or 270 degrees at random
