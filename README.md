@@ -15,5 +15,7 @@ the downloaded weight folders can be moved to a folder name **weights** and the 
 
 ### Reconstruction of Images with Dimension Discovery
 
+Direction discovery algorithm from Voynov, Andrey, and Artem Babenko. “Unsupervised Discovery of Interpretable Directions in the GAN Latent Space.” ArXiv:2002.03754 [Cs, Stat], June 24, 2020. http://arxiv.org/abs/2002.03754.
+
 The weights for the A model and R model can be found [here](https://nx9836.your-storageshare.de/s/YTxTDxL2C3EWCFj),
 the downloaded weight folders can be moved to a folder name **weights_dim** and the notebook can be executed with the preferred dimension number
